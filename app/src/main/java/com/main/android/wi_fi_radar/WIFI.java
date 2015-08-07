@@ -10,14 +10,15 @@ public class WIFI {
     private int security;
     private int channel;
 
-    public void WIFE(String SSID, String BSSID, int level, int security, int channel, boolean WPS) {
-        this.BSSID = BSSID;
-        this.WPS = WPS;
-        this.channel = channel;
+    public WIFI(String ssid, String bssid, int channelFromFrequency, int level, int security, boolean wps) {
+        this.BSSID = bssid;
+        this.WPS = wps;
+        this.channel = channelFromFrequency;
         this.security = security;
         this.level = level;
-        this.SSID = SSID;
+        this.SSID = ssid;
     }
+
 
     public boolean getWPS() {
         return WPS;
@@ -31,15 +32,15 @@ public class WIFI {
         return BSSID;
     }
 
-    public int getLevel(){
+    public int getLevel() {
         return level;
     }
 
-    public int getSecurity(){
+    public int getSecurity() {
         return security;
     }
 
-    public int getChannel(){
+    public int getChannel() {
         return channel;
     }
 
