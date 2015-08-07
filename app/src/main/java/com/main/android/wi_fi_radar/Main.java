@@ -17,20 +17,22 @@ import java.util.List;
 
 public class Main extends AppCompatActivity {
 
-    private int maxSignalLevel=100;
-
+    public static int maxSignalLevel=100;
+    RadarView rv;
     WifiManager wifi;
+    List<ScanResult> results;
     private final static ArrayList<Integer> channelsFrequency =
             new ArrayList<>(
                     Arrays.asList(0, 2412, 2417, 2422, 2427, 2432, 2437, 2442,
                             2447, 2452, 2457, 2462, 2467, 2472, 2484));
 
-    ArrayList<WIFI> WiFiAPs = new ArrayList<>();
+    ArrayList<WIFI> WiFiAPs;
 
     BroadcastReceiver scanReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            List<ScanResult> results = wifi.getScanResults();
+            results= new ArrayList<>();
+            results=wifi.getScanResults();
             if (results == null) return;
             WiFiAPs.clear();
             for (ScanResult result : results) {
@@ -44,6 +46,7 @@ public class Main extends AppCompatActivity {
                         getWPS(result.capabilities));
                 WiFiAPs.add(AP);
             }
+            rv.invalidate();
         }
     };
 
@@ -68,13 +71,19 @@ public class Main extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        rv = (RadarView)this.findViewById
+                (R.id.radarView);
+
         wifi=(WifiManager)getSystemService(Context.WIFI_SERVICE);
 
         if (!wifi.isWifiEnabled())
             if (wifi.getWifiState() != WifiManager.WIFI_STATE_ENABLING)
                 wifi.setWifiEnabled(true);
+        WiFiAPs= new ArrayList<>();
 
 
+        rv.setData(WiFiAPs);
+        wifi.startScan();
 
     }
 
